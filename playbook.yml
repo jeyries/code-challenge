@@ -1,0 +1,85 @@
+---
+- name: deploy the code-challenge software stack
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - name: Update repositories cache
+    apt:
+      update_cache: yes
+
+  - name: Install usefull packages
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - ntp
+      - software-properties-common
+      - libffi-dev
+      - git
+      - sqlite3
+      - libsqlite3-dev
+      #- cgroup-bin
+      #- cgmanager-utils
+      #- lxc
+      #- lxc-dev
+      - python-dev
+      - python3-dev
+      - python-pip
+      - python3-pip
+      - nginx
+      - supervisor
+
+  - name: Install provisioning dependencies
+    pip: 
+      name: lxc-python2
+
+  # - name: Creates directory
+  #   file:
+  #     path: /opt/code-challenge
+  #     state: directory
+  #     owner: vagrant
+  #     group: vagrant
+  #     mode: 0700
+  #     recurse: yes
+
+  - name: Install Python requirements
+    pip: 
+      requirements: /opt/code-challenge/repo/server/requirements.txt
+      executable: pip3
+
+  # - name: Copy lxc conf file
+  #   copy: 
+  #     src: /opt/code-challenge/repo/container/container.conf
+  #     dest: /home/vagrant/.config/lxc/default.conf
+
+  # - name: Create container
+  #   lxc_container:
+  #     name: ubuntu1
+  #     container_log: true
+  #     container_log_level: DEBUG
+  #     template: ubuntu
+  #     template_options: --release trusty
+  #     # backing_store: overlayfs
+  #     # clone_snapshot: true
+  #     # clone_name: ubuntu1-clone
+  #     container_config:
+  #       - "lxc.start.auto = 1"
+  #       - "lxc.start.delay = 5"
+  #     state: started   
+
+  # - name: Install the Ansible repo
+  #   apt_repository:
+  #     repo: "ppa:ansible/ansible"
+  #     state: present
+  #     update_cache: yes
+    
+  # - name: Install Ansible
+  #   apt:
+  #     name: ansible
+
+  # - name: Copy "host" file
+  #   copy: 
+  #     src: container/hosts
+  #     dest: /etc/ansible/hosts 
+

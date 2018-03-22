@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/dist/favicon.ico">
+
+    <title>Code Challenge</title>
+
+    <!-- Bootstrap core CSS -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+
+    <!-- Custom styles for this template -->
+    <link href="/dist/index.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    
+  </head>
+
+  <body>
+
+    <script>
+    var CODECHALLENGE = %% codechallenge | safe %% ;
+    </script>
+        
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Code Challenge</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/leaderboard">Leaderboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/me">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/info">Help</a>
+            </li>
+          </ul>
+          <form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+    </header>
+
+    <div id="app" class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <router-link to="/mdf2016" class="nav-link">MDF 2016</a>
+            </li>
+            <li class="nav-item">
+              <router-link to="/mdf2017" class="nav-link">MDF 2017</a>
+            </li>
+            <li class="nav-item">
+              <router-link to="/dashlane2018" class="nav-link">Dashlane 2018</a>
+            </li>
+          </ul>
+        </nav>
+
+        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+
+          <div class="alert alert-danger" role="alert" v-if="message">
+            message : {{ message }}
+          </div>
+
+          <h1>Welcome to Code Challenge !</h1>
+          <p>Hello %% fullname %%, here are your challenges. Have fun !</p>
+
+          <div class="list-group">
+            <a v-for="challenge in challenges"
+                :href="'/solve/' + challenge.identifier" class="list-group-item list-group-item-action flex-column align-items-start">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ challenge.title }}</h5>
+                <small>{{ challenge.when }}</small>
+              </div>
+              <p class="mb-1">{{ challenge.comment }}</p>
+              <small>{{ challenge.status }}</small>
+            </a>
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/dist/index.js"></script>
+
+  </body>
+</html>

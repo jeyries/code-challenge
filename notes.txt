@@ -1,0 +1,540 @@
+
+https://www.w3schools.com/cssref/pr_class_display.asp
+https://www.w3schools.com/tags/tag_textarea.asp
+https://react-bootstrap.github.io/components.html
+https://getbootstrap.com/
+https://reactjs.org/tutorial/tutorial.html#an-interactive-component
+
+===
+
+http://flask.pocoo.org/
+
+===
+
+https://codeburst.io/creating-a-full-stack-web-application-with-python-npm-webpack-and-react-8925800503d9?gi=6879d9178329
+Creating a full-stack web application with Python, NPM, Webpack and React
+
+=== dev setup
+
+python3 -m venv
+
+
+===
+
+cd static 
+npm run watch
+
+===
+
+https://github.com/github/fetch
+
+===
+
+# some good setting for ssh ...
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_TYPE=en_US.UTF-8
+
+===
+
+brew cask install virtualbox
+brew cask install vagrant
+brew install ansible
+
+===
+
+vagrant up
+vagrant provision
+vagrant ssh
+
+===
+
+
+cd /opt/code-challenge
+python3 /vagrant/server/server.py
+
+===
+
+export FLASK_APP=/vagrant/server/server.py 
+export FLASK_DEBUG=1 
+
+flask run --host=0.0.0.0
+
+===
+
+lxc-create -n ubuntu1 -t download -- --dist ubuntu --release trusty
+
+https://the.binbashtheory.com/using-overlayfs-with-lxc/
+Using Overlayfs With Lxc
+
+lxc-clone -o ubuntu1 -n runner1
+
+ncdu ~/.local/share/lxc
+
+sudo lxc-create -n ubuntu1 -t ubuntu -B overlayfs
+
+sudo ncdu /var/lib/lxc
+
+sudo lxc-snapshot -n ubuntu1 
+sudo lxc-snapshot -n ubuntu1 -L
+
+sudo lxc-start -d -n ubuntu1
+sudo lxc-ls --fancy
+sudo lxc-console -n ubuntu1
+
+sudo lxc-attach -n ubuntu1 -- ls -l /home/ubuntu
+cat /vagrant/setup/template.py | sudo lxc-attach -n ubuntu1 -- /bin/sh -c "/bin/cat > /home/ubuntu/main.py"
+sudo lxc-attach -n ubuntu1 -- /bin/sh -c "/usr/bin/python3 /home/ubuntu/main.py"
+sudo lxc-destroy -n ubuntu1
+
+=== install Node.js
+
+sudo apt-get update
+sudo apt-get install curl 
+
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+=== install C
+
+sudo apt-get install build-essential
+
+=== disable network inside container
+
+guest:
+
+sudo apt-get install nano
+
+sudo nano /etc/network/interfaces
+remove eth0
+
+host:
+
+sudo lxc-stop -n ubuntu1
+
+sudo nano /var/lib/lxc/ubuntu1/config
+lxc.network.type = empty
+
+sudo lxc-start -n ubuntu1 -d
+
+=== add user (interactive)
+
+sudo adduser chimp
+
+=== database
+
+sqlite3 /opt/code-challenge/server.db
+
+https://github.com/coleifer/peewee
+a small, expressive orm -- supports postgresql, mysql and sqlite http://docs.peewee-orm.com/
+
+===
+
+https://stackoverflow.com/questions/16872700/sqlite-data-change-notification-callbacks-in-python-or-bash-or-cli
+SQLite Data Change Notification Callbacks in Python or Bash or CLI
+
+=== https
+
+from https://askubuntu.com/questions/49196/how-do-i-create-a-self-signed-ssl-certificate
+
+cd /opt/code-challenge/
+
+As already mentioned, Ubuntu Server comes with the necessary tools. Depending on your server version you'll have to look up the specific documentation. I'll try to summarize the self-signed certificate generation process of the current LTS (12.04).
+
+First you generate the keys for the Certificate Signing Request (CSR):
+
+openssl genrsa -des3 -out server.key 2048
+
+It's up to you to enter a passphrase or not. If you do, everytime you (re)start a service usign that certificate, you'll have to provide the passphrase. Otoh you can create an "insecure" key without a passphrase from the secure one:
+
+openssl rsa -in server.key -out server.key.insecure
+# shuffle the key names to continue without passphrases
+mv server.key server.key.secure
+mv server.key.insecure server.key
+
+And now you'll create the CSR from the key. With the CSR and the key a self-signed certificate can be generated:
+
+openssl req -new -key server.key -out server.csr
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+The last step consists of installing the certificate and the key, in Debian/Ubuntu usually in /etc/ssl:
+
+sudo cp server.crt /etc/ssl/certs
+sudo cp server.key /etc/ssl/private
+
+And finally the applications using the certificate/key have to be configured accordingly.
+
+===
+
+cat repo/server/chimp.py | lxc-attach -n challenge1 -- su --login ubuntu -c "/bin/cat > /opt/code-challenge/chimp.py"
+
+=== install ansible on ubuntu 14.04
+
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+
+===
+
+cd /opt/code-challenge/repo/container
+sudo ansible-playbook -i hosts playbook.yml
+
+python2 not available on ubuntu1:
+see here :
+https://docs.ansible.com/ansible/latest/python_3_support.html#testing-python-3-with-commands-and-playbooks
+
+===
+
+wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+
+sudo apt-get install apt-transport-https
+sudo apt-get install software-properties-common
+sudo apt-add-repository "deb https://deb.nodesource.com/node_8.x trusty main"
+
+===
+
+sudo apt-get install whois
+mkpasswd --method=sha-512
+
+===
+
+https://bootstrap-vue.js.org/
+Bootstrap + Vue
+
+===
+/challenge/mdf2017-minesweeper
+/challenge/list
+/challenge/solve/mdf2017-minesweeper
+
+===
+
+ansible-playbook -i hosts playbook-production.yml 
+
+===
+
+>>> # import the hash algorithm
+>>> from passlib.hash import sha512_crypt
+
+>>> # generate new salt, and hash a password
+>>> hash = sha512_crypt.encrypt("password")
+>>> hash
+
+===
+
+git remote add production ssh://challenge@server3/opt/code-challenge/repo
+
+===
+
+https://letsencrypt.org/
+
+$ sudo apt-get update
+$ sudo apt-get install software-properties-common
+$ sudo add-apt-repository ppa:certbot/certbot
+$ sudo apt-get update
+$ sudo apt-get install certbot 
+
+sudo certbot certonly --standalone -d code-challenge.jeyries.fr
+
+
+- Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/code-challenge.jeyries.fr/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/code-challenge.jeyries.fr/privkey.pem
+ 
+ 
+cp /etc/letsencrypt/live/code-challenge.jeyries.fr/fullchain.pem /opt/code-challenge/server.crt
+cp /etc/letsencrypt/live/code-challenge.jeyries.fr/privkey.pem /opt/code-challenge/server.key
+
+===
+
+git remote add production ssh://challenge@server3/opt/code-challenge/content
+
+===
+
+open https://code-challenge.jeyries.fr:5000
+
+===
+
+export FLASK_APP=/opt/code-challenge/repo/server/server.py
+export FLASK_DEBUG=1 
+
+flask run --host=0.0.0.0
+
+===
+
+sudo apt-get install authbind
+
+sudo touch /etc/authbind/byport/80
+sudo touch /etc/authbind/byport/443
+sudo chmod 777 /etc/authbind/byport/80
+sudo chmod 777 /etc/authbind/byport/443
+
+authbind --deep flask run --host=0.0.0.0 --port 443
+
+=> use nginx
+
+===
+https://getbootstrap.com/docs/4.0/components/list-group/
+
+List group
+
+List groups are a flexible and powerful component for displaying a series of content. 
+Modify and extend them to support just about any content within.
+
+
+=== lxc user
+
+from https://stgraber.org/2014/01/17/lxc-1-0-unprivileged-containers/
+
+Now create ~/.config/lxc/default.conf with the following content:
+
+lxc.network.type = veth
+lxc.network.link = lxcbr0
+lxc.network.flags = up
+lxc.network.hwaddr = 00:16:3e:xx:xx:xx
+lxc.id_map = u 0 100000 65536
+lxc.id_map = g 0 100000 65536
+
+And /etc/lxc/lxc-usernet with:
+
+challenge veth lxcbr0 10
+
+
+
+==> ssh challenge@server3
+
+mkdir -p ~/.config/lxc
+cp container/container.conf ~/.config/lxc/default.conf
+
+sudo nano /etc/lxc/lxc-usernet
+challenge veth lxcbr0 10
+
+sudo usermod --add-subuids 100000-165536 $USER
+sudo usermod --add-subgids 100000-165536 $USER
+sudo chmod +x $HOME
+
+
+
+lxc-create -n challenge1 -t download -- -d ubuntu -r xenial -a amd64
+
+from https://gist.github.com/julianlam/4e2bd91d8dedee21ca6f
+
+passwd challenge
+adduser challenge sudo
+
+$ sudo apt-get install cgmanager-utils
+$ sudo cgm create all $USER
+$ sudo cgm chown all $USER $(id -u) $(id -g)
+$ cgm movepid all $USER $$
+
+
+
+
+lxc-start -n challenge1 -d 
+
+lxc-attach -n challenge1 -- passwd ubuntu
+
+lxc-console -n challenge1
+
+
+cd /opt/code-challenge/repo/container
+ansible-playbook -i hosts playbook.yml
+
+
+=== install Go
+
+wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+tar xf go1.9.3.linux-amd64.tar.gz
+
+====
+
+https://blog.docker.com/2013/10/gathering-lxc-docker-containers-metrics/
+Gathering LXC and Docker containers metrics
+
+https://www.mattfischer.com/blog/archives/399
+Limiting LXC Memory Usage 
+
+nano ~/.local/share/lxc/challenge1/config
+lxc.cgroup.memory.limit_in_bytes = 512M
+lxc.cgroup.memory.memsw.limit_in_bytes = 1G
+
+lxc.aa_allow_incomplete = 1
+
+lxc-start -n challenge1 --foreground -l debug -o debug.out
+
+cat /sys/fs/cgroup/memory/lxc/ubuntu2/memory.max_usage_in_bytes
+
+
+lxc.cgroup.cpuset.cpus = 0
+
+cat /proc/cpuinfo
+htop
+
+sudo apt-get install sysstat
+
+/opt/go/bin/go run cpuburn.go -n 2
+
+== switching to ubuntu 16.04 (Xenial)
+
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible 
+sudo apt-get update
+sudo apt-get install ansible
+
+cd /opt/code-challenge/repo/
+sudo ansible-playbook -i "localhost," -c local playbook.yml
+
+== container
+
+lxc-attach -n challenge1 -- su --login root -c "apt -y update && apt install -y python-minimal"
+
+===
+
+ssh-copy-id challenge@server3
+
+===
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+How To Install and Use Docker on Ubuntu 16.04 
+
+docker container run --interactive --tty --rm ubuntu bash
+
+apt-get update
+apt-get install python
+
+
+docker image build --tag jeyries2/challenge:1.0 .
+
+docker container run --detach --name challenge jeyries2/challenge:1.0
+docker container run --interactive --tty --rm jeyries2/challenge bash
+docker container run --interactive --tty --rm \
+ --mount type=bind,source="$(pwd)",target=/home/chimp/temp \
+ jeyries2/challenge bash
+
+
+docker container run --name challenge jeyries2/challenge:1.0
+
+docker exec -it challenge sh
+
+docker login
+docker push jeyries2/challenge
+
+docker build -t jeyries2/challenge .
+docker container run --interactive --tty --rm jeyries2/challenge python3 chimp.py
+
+== trying to hack container
+
+os.system("uname -a")
+os.system("whoami")
+os.system("pwd")
+os.system("env")
+os.system("rm -f /etc/passwd")
+os.system("ping -c 1 www.google.com")
+os.system("curl https://httpbin.org/ip")
+
+== limit mem
+
+docker container run --interactive --tty --rm --memory="512m" jeyries2/challenge bash
+
+== limit cpu
+
+docker container run --interactive --tty --rm --cpus="1" jeyries2/challenge bash
+
+== limit network
+
+docker container run --interactive --tty --rm --network=none jeyries2/challenge bash
+
+=== flask cli
+
+from http://flask.pocoo.org/docs/0.12/cli/
+
+nano ~/.profile
+
+# Code Challenge
+export FLASK_APP=/opt/code-challenge/repo/server/server.py
+
+flask shell
+
+vagrant@ubuntu-xenial:~$ flask shell
+Python 3.5.2 (default, Nov 23 2017, 16:37:01) 
+[GCC 5.4.0 20160609] on linux
+App: server
+Instance: /opt/code-challenge/repo/server/instance
+>>> g
+<flask.g of 'server'>
+>>> app
+<CustomFlask 'server'>
+>>> 
+
+===
+
+flask run --host 0.0.0.0 --port 5000
+
+sudo apt-get install nginx
+pip3 install gunicorn
+
+gunicorn --bind 0.0.0.0:5000 wsgi:app
+gunicorn --config gunicorn_config.py wsgi:app
+
+http://www.onurguzel.com/how-to-run-flask-applications-with-nginx-using-gunicorn/
+How to Run Flask Applications with Nginx Using Gunicorn
+
+http://www.onurguzel.com/managing-gunicorn-processes-with-supervisor/
+Managing Gunicorn Processes With Supervisor
+
+sudo cp nginx.conf /etc/nginx/sites-available/code-challenge.conf
+sudo ln -s /etc/nginx/sites-available/code-challenge.conf /etc/nginx/sites-enabled/
+sudo rm /etc/nginx/sites-enabled/default
+
+sudo apt-get install supervisor
+
+sudo cp supervisor.conf /etc/supervisor/conf.d/code-challenge.conf
+
+cp gunicorn_config.py /opt/code-challenge
+
+===
+
+
+Embed Font
+
+To embed your selected fonts into a webpage, copy this code into the <head> of your HTML document.
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+
+Specify in CSS
+
+Use the following CSS rules to specify these families:
+
+    font-family: 'Source Code Pro', monospace;
+
+===
+
+sqlite3 /opt/code-challenge/server.db
+
+sqlite> UPDATE User SET score = 1 WHERE email = 'julien@eyries.fr';
+sqlite> SELECT * from User;
+1|f749c1bf-3a33-46ab-a81b-359813948caf|julien@eyries.fr|$2a$12$In/m.gFSEYer7Gli46zCaeyvYwO6HDqBQm2m70MaY6fgQc392wWsi|1|0
+2|83f51402-be10-4daf-bb7f-e3b41fd84d2c|toto@toto.com|$2a$12$eFtPyGMCPhSWTFwLlIKNgug.4jPD3ntI96O836qKyEr23PVfzYoVS|0|0
+
+===
+
+$ sudo timedatectl set-timezone Europe/Paris
+vagrant@ubuntu-xenial:~$ date
+Wed Feb 28 15:01:07 CET 2018
+
+
+sudo apt-get install ntp
+
+===
+
+pip3 install --requirement server/requirements.txt
+flask run
+
+===
+
+open http://127.0.0.1:5000/join/ZtNEyQ7N
+

@@ -1,0 +1,23 @@
+---
+app:
+  secret_key: Jnpd3vhO9sg4LNAx
+  register:
+    token: ZtNEyQ7N
+
+challenges:
+  - identifier: mdf2017-rollercoaster
+    path: mdf2017/rollercoaster
+    title: RollerCoaster
+    comment: You are the owner of a roller coaster. This is a train that goes up and down on a rail
+
+  - identifier: mdf2017-dodecagon
+    path: mdf2017/dodecagon
+    title: Dodecagon
+    comment: In geometry, a dodecagon is an twelve-sided polygon or 12-gon.
+
+  - identifier: mdf2017-minesweeper
+    path: mdf2017/minesweeper
+    title: Minesweeper
+    comment: The famous Minesweeper game.
+
+

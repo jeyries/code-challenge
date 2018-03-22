@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="dist/favicon.ico">
+
+    <title>Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+
+    <!-- Custom styles for this template -->
+    <link href="/dist/login.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue/dist/bootstrap-vue.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <% if message %>
+      <div class="alert alert-danger" role="alert">
+          %% message %%
+      </div>
+      <% endif %>
+
+      <form id="app" class="form-signin" method="post">
+        <h2 class="form-signin-heading">Please login</h2>
+        <label for="email" class="sr-only">email</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="email" v-model="email" required autofocus>
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password" v-model="password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+      </form>
+
+    </div> <!-- /container -->
+
+    <script src="/dist/login.js"></script>
+
+  </body>
+</html>
+

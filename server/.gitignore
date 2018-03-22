@@ -1,0 +1,8 @@
+__pycache__/
+data/
+*.pyc
+stderr.txt 
+answer.txt
+stdin.txt
+stdout.txt
+

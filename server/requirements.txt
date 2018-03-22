@@ -1,0 +1,7 @@
+flask
+cython
+peewee
+py-bcrypt
+pyyaml
+Flask-Misaka
+gunicorn

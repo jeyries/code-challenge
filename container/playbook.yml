@@ -1,0 +1,136 @@
+---
+- name: deploy the container stack
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - name: install python 2
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+  - name: Update repositories cache
+    apt:
+      update_cache: yes
+
+  - name: Install usefull packages
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - nano
+      - curl
+      - wget
+      - apt-transport-https
+      - zip
+      - unzip
+
+  - name: Add the 'chimp' user
+    user:
+      name: chimp
+      # password: chimp
+      password: $6$vGGRhgQVcZrvg$vTefyj4zw7J0hkGSIdG5Mda2vosO3ElOOREvEWQfYBLlPWC.adTjaF.RwrHdGQ/tY./P5OXBihIIMhGUAguRG0
+
+  - name: Creates directory
+    file:
+      path: /opt/code-challenge
+      state: directory
+      owner: ubuntu
+      group: ubuntu
+      mode: 0755
+      recurse: yes
+
+  # - name: copy the 'chimp' script
+  #   become_user: ubuntu
+  #   shell: /bin/cat > /opt/code-challenge/chimp.py
+  #   args:
+  #     stdin: /vagrant/server/chimp.py # joke here !
+  #     creates: /opt/code-challenge/chimp.py
+  #   copy:
+  #     src: /vagrant/server/chimp.py
+  #     dest: /opt/code-challenge/chimp.py
+  #     owner: ubuntu
+  #     group: ubuntu
+  #     mode: 0644
+
+  - name: Install C
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - build-essential
+
+  - name: Install Python
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - python
+      - python3
+      - python-pip
+      - python3-pip
+
+  - name: Install Python requirements
+    pip: 
+      name: "{{ item }}"
+      executable: pip3
+    with_items:
+      - numpy
+
+  - name: Install Java
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - openjdk-8-jre-headless
+      - openjdk-8-jdk-headless
+
+  - name: Install the gpg key for nodejs LTS
+    shell: wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+  #   apt_key:
+  #     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+  #     state: present
+    
+  - name: Install the nodejs LTS repos
+    apt_repository:
+      repo: "deb https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main"
+      state: present
+      update_cache: yes
+
+  - name: Install the nodejs
+    apt:
+      name: nodejs
+      state: present
+
+  - name: Install Swift dependencies
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - clang
+      - libicu-dev
+
+  - name: Download and unpack Swift 
+    unarchive:
+      src: https://swift.org/builds/swift-4.0.3-release/ubuntu1404/swift-4.0.3-RELEASE/swift-4.0.3-RELEASE-ubuntu14.04.tar.gz
+      dest: /opt
+      remote_src: yes
+      creates: /opt/swift-4.0.3-RELEASE-ubuntu14.04
+
+  - name: Link Swift
+    command: ln -s /opt/swift-4.0.3-RELEASE-ubuntu14.04 /opt/swift
+    args:
+      creates: /opt/swift
+
+  - name: Download and unpack Go 
+    unarchive:
+      src: https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+      dest: /opt
+      remote_src: yes
+      creates: /opt/go
+  
+  - name: Install Scala
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - scala
+
+  # - name: Install Kotlin
+  #   shell: |
+  #     curl -s https://get.sdkman.io | bash
+  #     source ~/.sdkman/bin/sdkman-init.sh
+  #     sdk install kotlin

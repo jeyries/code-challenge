@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="dist/favicon.ico">
+
+    <title>Register</title>
+
+    <!-- Bootstrap core CSS -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+
+    <!-- Custom styles for this template -->
+    <link href="/dist/register.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+  </head>
+
+  <body>
+
+    <script>
+    var CODECHALLENGE = %% codechallenge | safe %% ;
+    </script>
+
+    <div class="container" id="app">
+
+      <div class="alert alert-danger" role="alert" v-if="message_danger">
+          {{ message_danger }}
+      </div>
+
+      <div class="alert alert-success" role="alert" v-if="message_success">
+          {{ message_success }}
+      </div>
+
+      <form class="form-signin" v-on:submit="submit">
+        <h2 class="form-signin-heading">Please register</h2>
+        <label for="email" class="sr-only">email</label>
+        <input type="email" id="email" class="form-control" placeholder="email" v-model="email" required autofocus>
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" class="form-control" placeholder="Password" v-model="password" required>
+        <label for="password2" class="sr-only">Verify</label>
+        <input type="password" id="verify" class="form-control" placeholder="Verify" v-model="verify" required>
+        <button class="btn btn-lg btn-primary btn-block">Register</button>
+      </form>
+
+    </div> <!-- /container -->
+
+    <script src="/dist/register.js"></script>
+
+  </body>
+</html>
+
